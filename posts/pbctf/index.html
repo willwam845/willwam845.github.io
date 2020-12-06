@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>blog by willwam845 | pbctf 2020 writeups</title>
+  <link rel="stylesheet" href="/assets/css/mark.css" />
+  <link rel="stylesheet" href="/assets/css/custom.css" />
+  <!-- PILL JS LOADER SYLE -->
+  <style>
+    #indicator {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 3px;
+      display: none;
+      background-color: #85fffd;
+    }
+
+    .is-loading {
+      display: block;
+      animation: blink 1.5s linear infinite;
+    }
+
+    @keyframes blink {
+      from,
+      to {
+        background-color: #85fffd;
+      }
+
+      50% {
+        background-color: #4287f5;
+      }
+    }
+
+    #project-link {
+      display: block;
+      position: fixed;
+      padding: 8px;
+      top: 0;
+      right: 0;
+    }
+  </style>
+  <!-- PILL JS -->
+  <script src="/assets/js/pill.min.js"></script>
+  <script>
+    // this is for pill js as the normal link wont work
+    function openLink(url) {
+      window.open(url, "_blank");
+    }
+  </script>
+</head>
+
+  <body>
+    <div id="indicator"></div>
+    <div id="page">
+      <style>
+        .title {
+          padding: 2%;
+          color: #101417;
+          font-size: 20px;
+          font-weight: bold;
+          text-align: left;
+          background: #23b0ff;
+          font-size: 2rem;
+        }
+        .meta {
+          font-size: 0.7rem;
+          font-weight: normal;
+          text-transform: uppercase;
+        }
+      </style>
+      <!-- header -->
+      <header>
+	<a href="/">
+		<h3>blog by willwam845</h3>
+	</a>
+</header>
+
+      <!-- nav -->
+      <nav>
+	
+		
+			<a href="/">home</a>
+		
+	
+		
+			<a href="/about">about</a>
+		
+	
+</nav>
+      <!-- page content -->
+      <main class="content">
+        <p class="title">
+          pbctf 2020 writeups <span class="meta"></span>
+        </p>
+        <span class="post-tags">pwd: /home/ctf/crypto,/home/ctf/misc</span>
+        <div>
+          <div id="markdown-content">
+            <p>ill add the rest later i cba rn</p>
+
+<h2 id="gcombo---misc">GCombo - misc</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>One day I spied out my friend accessing some google form to enter his secret combination lock. 
+Afterwards, I kept bothering him about it, and he finally decided to give the link to me. 
+Maybe you can figure out his combo for me and get a tasty flag in return:
+
+By: theKidOfArcrania
+</code></pre></div></div>
+
+<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSe7sOTLHmGjmUY3iE6E7QLqeYAZDfQXsiJrz8r-ZcA_4cXNFQ/viewform">link</a></p>
+
+<h3 id="survey">Survey?</h3>
+
+<p>This challenge presents us with a Google Forms site. This is typical for a survey challenge, and so we start by carrying out a KPBSA (known plaintext survey blood attack). We know the flag format is <code class="highlighter-rouge">pbctf{text_here}</code>, and so we search for this in the source.</p>
+
+<p>Upon doing so, we see that the flag is <code class="highlighter-rouge">pbctf{&lt;digits you got along the way&gt;_&lt;password&gt;}</code></p>
+
+<p><img src="/images/pbctf2020/flagthonk.PNG" alt="pls gimme flag ;-;" /></p>
+
+<p>Now, this was not the actual flag, and this is because we need to actually find these things in the Google Forms.</p>
+
+<p>We see that the Google Form itself prompts us with a selection screen with a “combination lock”. This is where the actual challenge begins.</p>
+
+<h3 id="a-quick-guide-to-google-forms">A quick guide to Google Forms</h3>
+
+<p>The whole reason why our KPBSA works is because Google Forms stores the data of the survey in the source of the html page, meaning that, if there are multiple sections to the form, you can see the oother sections before you complete the first.</p>
+
+<p>Google Forms also has a functionality, which allows you to, based on a user’s response, give them a section of the survey. The challenge uses this in order to “check” our password.</p>
+
+<p>But how does the form know what options lead where?</p>
+
+<p>Well, if we look at the survey itself, we see that each number option has a number after it.</p>
+
+<p><img src="/images/pbctf2020/numbers.PNG" alt="cool numbers" /></p>
+
+<p>Notice how after the 5, the number is different from the rest? This means that the location is different to all the others, and we can therefore assume that “5” is the first character of our pin.</p>
+
+<p>But now where do we go?</p>
+
+<p>We need to find some way to figure out where this takes us, and what the number means. To do this, I’m going to do some local testing.</p>
+
+<p>I created this very simple form, which only has one question. It redirects to the next section if you pick “no”, redirects back to the same section if you select “yes”, and redirects to the third section if you pick “maybe”.</p>
+
+<p><img src="/images/pbctf2020/form.PNG" alt="do you like stego" /></p>
+
+<p>We can now take a look at the public data created from this Google Form</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[null,["",[[2007564277,"is it",null,2,[[1668954036,[["yes",null,-1,null,0]
+,["no",null,1475128018,null,0]
+,["maybe",null,2106518918,null,0]
+]
+,0,null,null,null,null,null,0]
+]
+]
+,[1475128018,"Flag","wow its a flag well done",8]
+,[2106518918,"i hate you",null,8]
+]
+,null,null,null,[0,0]
+,null,[1,""]
+,"is stego bad",48,[null,null,null,null,0]
+,null,null,null,null,[2]
+]
+</code></pre></div></div>
+
+<p>Notice the numbers after the “no” option and “maybe” option, which should redirect us to sections 2 and 3, are the same as the numbers before the texts of those sections? Now we have a way to get where an option will lead!</p>
+
+<h3 id="solving-the-challenge">Solving the challenge</h3>
+
+<p>Firstly, we know that the flag is the series of digits followed by some sort of password, so we start by trying to look for this password.</p>
+
+<p>We, after briefly scrolling through the html, find this line.</p>
+
+<p>That’s most likely our password! And notice how it also has a section number, meaning that we can trace where it came from.</p>
+
+<p><img src="/images/pbctf2020/password.PNG" alt="shiny password ooo" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>751651474 &gt; ?
+</code></pre></div></div>
+
+<p>Searching for this number in the code, we find that it takes us to this section if we enter a “0” as the last digit of our pin.</p>
+
+<p><img src="/images/pbctf2020/goback.PNG" alt="go back" /></p>
+
+<p>Now the path is quite clear, we need to go back and retrieve all the digits by working backwards using the section numbers as our guide.</p>
+
+<p>We do this to get:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>751651474 &gt; 1385363611 - digit 0
+1385363611 &gt; 1566374398 - digit 7
+1566374398 &gt; 46599266 - digit 3
+46599266 &gt; 1138684813 - digit 3
+1138684813 &gt; 1996292448 - digit 9
+1996292448 &gt; 1737460359 - digit 6
+1737460359 &gt; 147720654 - digit 2
+147720654 &gt; 1094087816 - digit 1
+1094087816 &gt; 1114266997 - digit 8
+1114266997 &gt; 938169490 - digit 5
+</code></pre></div></div>
+
+<p>Reversing the obtained digits gets us our actual pin: 5812693370</p>
+
+<p>And we have our password from before, so we have all we need for our flag!</p>
+
+<p>Flag: <code class="highlighter-rouge">pbctf{5812693370_s3cuR3_p1n_id_2_3v3ry0ne}</code></p>
+
+          </div>
+        </div>
+      </main>
+      <!-- footer -->
+      <footer>
+	<p>
+		yeah this blog was made by me
+	</p>
+	<p>
+		&copy 2019 | made with the <a href="https://github.com/sharadcodes/jekyll-theme-dark-reader">dark reader theme</a>
+	</p>
+</footer>
+<script src='/assets/js/site.js' id="pill_site_script" type='module'></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }]})"></script>
+
+
+    </div>
+  </body>
+</html>

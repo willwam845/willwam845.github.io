@@ -119,3 +119,54 @@ footer {
 		margin-right: 10%;
 	}
 }
+
+
+/* toc */   
+@media screen and (max-width: 1364px) {
+    .toc-container {
+      display: none !important;
+    }
+}
+
+.toc-container {
+    position: fixed;
+    top: 120px;
+    left: calc((100% - 1064px) / 2 - 250px);
+    width: 250px;
+    height: 100%;
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+     
+}
+
+.toc-list {
+    padding: 0px;
+}
+
+.toc-link {
+    text-decoration: none;
+}
+.toc-link::before {
+    background-color: transparent;
+}
+
+   
+.toc-list-item {
+    padding-left: 10px;
+    list-style-type: none;
+    color: #ccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+   
+.toc-list-item:hover {
+    color: #fff;
+}
+
+   
+.is-active-link::before {
+    background-color: #fff;
+}
