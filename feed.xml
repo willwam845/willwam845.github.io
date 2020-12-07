@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-12-06T23:57:12+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog by willwam845</title><entry><title type="html">pbctf 2020 writeups</title><link href="http://localhost:4000/posts/pbctf/" rel="alternate" type="text/html" title="pbctf 2020 writeups" /><published>2020-12-06T00:00:00+00:00</published><updated>2020-12-06T00:00:00+00:00</updated><id>http://localhost:4000/posts/pbctf</id><content type="html" xml:base="http://localhost:4000/posts/pbctf/">&lt;p&gt;ill add the rest later i cba rn&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-12-07T00:02:51+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog by willwam845</title><entry><title type="html">pbctf 2020 writeups</title><link href="http://localhost:4000/posts/pbctf/" rel="alternate" type="text/html" title="pbctf 2020 writeups" /><published>2020-12-06T00:00:00+00:00</published><updated>2020-12-06T00:00:00+00:00</updated><id>http://localhost:4000/posts/pbctf</id><content type="html" xml:base="http://localhost:4000/posts/pbctf/">&lt;p&gt;ill add the rest later i cba rn&lt;/p&gt;
 
 &lt;h2 id=&quot;gcombo---misc&quot;&gt;GCombo - misc&lt;/h2&gt;
 
@@ -102,141 +102,12 @@ By: theKidOfArcrania
 
 &lt;p&gt;And we have our password from before, so we have all we need for our flag!&lt;/p&gt;
 
-&lt;p&gt;Flag: &lt;code class=&quot;highlighter-rouge&quot;&gt;pbctf{5812693370_s3cuR3_p1n_id_2_3v3ry0ne}&lt;/code&gt;&lt;/p&gt;</content><author><name></name></author><category term="/ctf/crypto,/home/ctf/misc" /><summary type="html">ill add the rest later i cba rn</summary></entry><entry><title type="html">hello</title><link href="http://localhost:4000/posts/hello/" rel="alternate" type="text/html" title="hello" /><published>2020-11-30T10:18:00+00:00</published><updated>2020-11-30T10:18:00+00:00</updated><id>http://localhost:4000/posts/hello</id><content type="html" xml:base="http://localhost:4000/posts/hello/">&lt;p&gt;welcome to my blog uh theres nothing here at the moment so enjoy your stay i guess&lt;/p&gt;
+&lt;p&gt;Flag: &lt;code class=&quot;highlighter-rouge&quot;&gt;pbctf{5812693370_s3cuR3_p1n_id_2_3v3ry0ne}&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/hello/inspiration.png&quot; alt=&quot;Octocat&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;trivia&quot;&gt;Trivia&lt;/h3&gt;
 
-&lt;h2 id=&quot;test&quot;&gt;test&lt;/h2&gt;
-&lt;p&gt;a
-a
-a
-more
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-lines 
-cool test&lt;/p&gt;
+&lt;p&gt;cool fact i was in fact inspiration for this challege&lt;/p&gt;
 
-&lt;h3 id=&quot;problem-with-test&quot;&gt;problem with test&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/images/pbctf2020/inspirative.PNG&quot; alt=&quot;inspirative&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-a
-the test kinda sucks
-a
-a
-a
-aa
-a
-a
-a
-a
-a
-a
-a
-a&lt;/p&gt;
-
-&lt;h2 id=&quot;test-2&quot;&gt;test 2&lt;/h2&gt;
-
-&lt;p&gt;another test&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a
-a&lt;/p&gt;
-
-&lt;p&gt;a
-a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;p&gt;a&lt;/p&gt;
-
-&lt;h2 id=&quot;wow-another-one&quot;&gt;wow another one&lt;/h2&gt;
-
-&lt;p&gt;astriped thigh highs&lt;/p&gt;
-
-&lt;p&gt;a
-a
-a&lt;/p&gt;
-
-&lt;p&gt;aa&lt;/p&gt;
-
-\[1+1=2\]
-
-&lt;p&gt;latex&lt;/p&gt;</content><author><name></name></author><category term="/welcome" /><summary type="html">welcome to my blog uh theres nothing here at the moment so enjoy your stay i guess</summary></entry></feed>
+&lt;p&gt;so thats pretty nifty i think&lt;/p&gt;</content><author><name></name></author><category term="/ctf/crypto,/home/ctf/misc" /><summary type="html">ill add the rest later i cba rn</summary></entry><entry><title type="html">hello</title><link href="http://localhost:4000/posts/hello/" rel="alternate" type="text/html" title="hello" /><published>2020-11-30T10:18:00+00:00</published><updated>2020-11-30T10:18:00+00:00</updated><id>http://localhost:4000/posts/hello</id><content type="html" xml:base="http://localhost:4000/posts/hello/">&lt;p&gt;welcome to my blog uh theres nothing here at the moment so enjoy your stay i guess&lt;/p&gt;</content><author><name></name></author><category term="/welcome" /><summary type="html">welcome to my blog uh theres nothing here at the moment so enjoy your stay i guess</summary></entry></feed>
