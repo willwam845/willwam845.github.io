@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-01-22T17:52:33+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog by willwam845</title><entry><title type="html">pbctf 2020 writeups</title><link href="http://localhost:4000/posts/pbctf/" rel="alternate" type="text/html" title="pbctf 2020 writeups" /><published>2020-12-06T00:00:00+00:00</published><updated>2020-12-06T00:00:00+00:00</updated><id>http://localhost:4000/posts/pbctf</id><content type="html" xml:base="http://localhost:4000/posts/pbctf/">&lt;h1 id=&quot;perfect-blue-ctf-2020&quot;&gt;Perfect Blue CTF 2020&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-01-22T22:39:15+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">blog by willwam845</title><entry><title type="html">pbctf 2020 writeups</title><link href="http://localhost:4000/posts/pbctf/" rel="alternate" type="text/html" title="pbctf 2020 writeups" /><published>2020-12-06T00:00:00+00:00</published><updated>2020-12-06T00:00:00+00:00</updated><id>http://localhost:4000/posts/pbctf</id><content type="html" xml:base="http://localhost:4000/posts/pbctf/">&lt;h1 id=&quot;perfect-blue-ctf-2020&quot;&gt;Perfect Blue CTF 2020&lt;/h1&gt;
 
 &lt;p&gt;I participated in Perfect Blue CTF hosted by the wonderful team &lt;a href=&quot;https://perfect.blue/&quot;&gt;perfect blue&lt;/a&gt; with the &lt;a href=&quot;https://ctftime.org/team/132628&quot;&gt;Crusaders of Rust&lt;/a&gt;. We placed 11th, which I think is pretty good!&lt;/p&gt;
 
 &lt;p&gt;Here’s my writeups for the challenges that I solved.&lt;/p&gt;
 
-&lt;h2 id=&quot;gcombo---misc&quot;&gt;GCombo - misc&lt;/h2&gt;
+&lt;h1 id=&quot;gcombo---misc&quot;&gt;GCombo - misc&lt;/h1&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;One day I spied out my friend accessing some google form to enter his secret combination lock. 
 Afterwards, I kept bothering him about it, and he finally decided to give the link to me. 
@@ -116,14 +116,14 @@ By: theKidOfArcrania
 
 &lt;p&gt;so thats pretty nifty i think&lt;/p&gt;
 
-&lt;h2 id=&quot;ainissesthai---crypto&quot;&gt;Ainissesthai - Crypto&lt;/h2&gt;
+&lt;h1 id=&quot;ainissesthai---crypto&quot;&gt;Ainissesthai - Crypto&lt;/h1&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;A team of codebreakers had to invent computers to break this cipher. Can you figure out what the flag is?
 
 By: UnblvR
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;a href=&quot;/ctffiles/pbctf2020/ainissesthai.py&quot;&gt;download&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://willwam845.github.io/ctffiles/pbctf2020/ainissesthai.py&quot;&gt;download&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;We get a single download, along with a server to connect to. Let’s have a look at the download, which is presumably the source code for the server.&lt;/p&gt;
 
@@ -184,15 +184,15 @@ By: UnblvR
 
 &lt;p&gt;Flag: &lt;code class=&quot;highlighter-rouge&quot;&gt;pbctf{FATALFLAWINENIGMA}&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;strong-cipher---revcrypto&quot;&gt;Strong Cipher - Rev/Crypto&lt;/h2&gt;
+&lt;h1 id=&quot;strong-cipher---revcrypto&quot;&gt;Strong Cipher - Rev/Crypto&lt;/h1&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Multiplication is better than addition.
 
 By: rbtree
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;a href=&quot;/ctffiles/pbctf2020/strong_cipher_binary&quot;&gt;binary&lt;/a&gt;
-&lt;a href=&quot;/ctffiles/pbctf2020/strong_cipher_ciphertext&quot;&gt;ciphertext&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://willwam845.github.io/ctffiles/pbctf2020/strong_cipher_binary&quot;&gt;binary&lt;/a&gt;
+&lt;a href=&quot;https://willwam845.github.io/ctffiles/pbctf2020/strong_cipher_ciphertext&quot;&gt;ciphertext&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;the-reversing&quot;&gt;The Reversing&lt;/h3&gt;
 
