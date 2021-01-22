@@ -99,7 +99,11 @@
         <span class="post-tags">tags: ctf,crypto,misc</span>
         <div>
           <div id="markdown-content">
-            <p>ill add the rest later i cba rn</p>
+            <h1 id="perfect-blue-ctf-2020">Perfect Blue CTF 2020</h1>
+
+<p>I participated in Perfect Blue CTF hosted by the wonderful team <a href="https://perfect.blue/">perfect blue</a> with the <a href="https://ctftime.org/team/132628">Crusaders of Rust</a>. We placed 11th, which I think is pretty good!</p>
+
+<p>Here’s my writeups for the challenges that I solved.</p>
 
 <h2 id="gcombo---misc">GCombo - misc</h2>
 
@@ -212,6 +216,235 @@ By: theKidOfArcrania
 <p><img src="/images/pbctf2020/inspiration.PNG" alt="inspirative" /></p>
 
 <p>so thats pretty nifty i think</p>
+
+<h2 id="ainissesthai---crypto">Ainissesthai - Crypto</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A team of codebreakers had to invent computers to break this cipher. Can you figure out what the flag is?
+
+By: UnblvR
+</code></pre></div></div>
+
+<p><a href="/ctffiles/pbctf2020/ainissesthai.py">download</a></p>
+
+<p>We get a single download, along with a server to connect to. Let’s have a look at the download, which is presumably the source code for the server.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/bin/env python3
+</span>
+<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">ascii_uppercase</span> <span class="k">as</span> <span class="n">UC</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">SystemRandom</span>
+<span class="kn">from</span> <span class="nn">enigma.machine</span> <span class="kn">import</span> <span class="n">EnigmaMachine</span>
+<span class="kn">from</span> <span class="nn">secretstuff</span> <span class="kn">import</span> <span class="n">FLAG</span><span class="p">,</span> <span class="n">PLUGBOARD_SETTINGS</span>
+
+<span class="k">assert</span> <span class="n">FLAG</span><span class="o">.</span><span class="n">isupper</span><span class="p">()</span> <span class="c1"># Without pbcft{...}
+</span><span class="n">random</span> <span class="o">=</span> <span class="n">SystemRandom</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+    <span class="n">ROTORS</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">((</span><span class="s">"I"</span><span class="p">,</span><span class="s">"II"</span><span class="p">,</span><span class="s">"III"</span><span class="p">,</span><span class="s">"IV"</span><span class="p">,</span><span class="s">"V"</span><span class="p">,</span><span class="s">"VI"</span><span class="p">,</span><span class="s">"VII"</span><span class="p">,</span><span class="s">"VIII"</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="n">REFLECTOR</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">((</span><span class="s">"B"</span><span class="p">,</span> <span class="s">"C"</span><span class="p">,</span> <span class="s">"B-Thin"</span><span class="p">,</span> <span class="s">"C-Thin"</span><span class="p">))</span>
+    <span class="n">RING_SETTINGS</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="mi">26</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+
+    <span class="n">machine</span> <span class="o">=</span> <span class="n">EnigmaMachine</span><span class="o">.</span><span class="n">from_key_sheet</span><span class="p">(</span>
+           <span class="n">rotors</span><span class="o">=</span><span class="n">ROTORS</span><span class="p">,</span>
+           <span class="n">reflector</span><span class="o">=</span><span class="n">REFLECTOR</span><span class="p">,</span>
+           <span class="n">ring_settings</span><span class="o">=</span><span class="n">RING_SETTINGS</span><span class="p">,</span>
+           <span class="n">plugboard_settings</span><span class="o">=</span><span class="n">PLUGBOARD_SETTINGS</span><span class="p">)</span>
+
+    <span class="n">machine</span><span class="o">.</span><span class="n">set_display</span><span class="p">(</span><span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">UC</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+
+    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">process_text</span><span class="p">(</span><span class="n">FLAG</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Seems we are dealing with the classical Enigma cipher.</p>
+
+<p>Upon further inspection of the code, we see that we also don’t have any way to interact with the server, we just get output.</p>
+
+<p>The server seems to generate a random set of parameters for the rotors, reflector and ring settings, however it doesn’t change the plugboard settings, as those are read from a file.</p>
+
+<p>The vulnerability here is that when you encrypt a single character with enigma, it is <strong>impossible</strong> to get the encrypted character be the same as the original plaintext character.</p>
+
+<p>This means we can use an attack which I like to call the “no leeks” attack. Basically, if we check, for each position, which letter of the alphabet never appears, we know that that character was the original plaintext character.</p>
+
+<p>Implementation below:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">ascii_uppercase</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"output.txt"</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span> <span class="c1"># just 200 lines of output
+</span><span class="n">plaintext</span> <span class="o">=</span> <span class="p">[</span><span class="s">""</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)):</span>
+  <span class="n">candidates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ascii_uppercase</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+      <span class="n">candidates</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+  <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+  <span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Flag: pbctf}"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Flag: <code class="highlighter-rouge">pbctf{FATALFLAWINENIGMA}</code></p>
+
+<h2 id="strong-cipher---revcrypto">Strong Cipher - Rev/Crypto</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Multiplication is better than addition.
+
+By: rbtree
+</code></pre></div></div>
+
+<p><a href="/ctffiles/pbctf2020/strong_cipher_binary">binary</a>
+<a href="/ctffiles/pbctf2020/strong_cipher_ciphertext">ciphertext</a></p>
+
+<h3 id="the-reversing">The Reversing</h3>
+
+<p>Now, I don’t really do rev, so I decided to leave this up to my teammates, and luckily, my teammate <a href="https://www.willsroot.io/">will135</a> did most of the reversing for me. The basic idea is that it takes in 3 arguments, which are 3 files, an input file, a key file and an output file.</p>
+
+<p>The key is truncated to 16 bytes, and then acts like a XOR key; it is repeated to the length of the plaintext.</p>
+
+<p>Then, byte by byte, the key and the plaintext byte are multiplied in the galois field of \(2^{8}\).</p>
+
+<h3 id="galois-field-multiplication">Galois field multiplication?</h3>
+
+<p>Galois field multiplication works slightly differently from normal multiplication, and I found a very nice <a href="https://www.samiam.org/galois.html">site</a> explaining it.</p>
+
+<p>It also gives pseudocode for a multiplication function, which goes as follows:</p>
+
+<ul>
+  <li>Take in 2 parameters <code class="highlighter-rouge">a</code>, and <code class="highlighter-rouge">b</code>.</li>
+  <li>Set the product, <code class="highlighter-rouge">p</code>, to 0</li>
+  <li>repeat 8 times:
+    <ul>
+      <li>if <code class="highlighter-rouge">b</code> % 2 == 1
+        <ul>
+          <li>perform a logical or on <code class="highlighter-rouge">p</code> and <code class="highlighter-rouge">a</code>, and make <code class="highlighter-rouge">p</code> the result</li>
+        </ul>
+      </li>
+      <li>check if <code class="highlighter-rouge">a</code>’s MSB is 1, and remember this for later</li>
+      <li>rotate <code class="highlighter-rouge">a</code> left by one bit</li>
+      <li>if <code class="highlighter-rouge">a</code>’s MSB was 1:
+        <ul>
+          <li>perform a logical or on <code class="highlighter-rouge">a</code> and the hex number 0x1b</li>
+        </ul>
+      </li>
+      <li>shift <code class="highlighter-rouge">b</code> one place to the right.</li>
+    </ul>
+  </li>
+  <li><code class="highlighter-rouge">p</code> is now the product of <code class="highlighter-rouge">a</code> and <code class="highlighter-rouge">b</code></li>
+</ul>
+
+<p>This was quick and easy to implement in python, so I wrote a function to do it.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+  <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="n">p</span> <span class="o">^=</span> <span class="n">a</span>
+    <span class="n">check</span> <span class="o">=</span> <span class="n">a</span> <span class="o">&amp;</span> <span class="mh">0x80</span>
+    <span class="n">a</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">check</span> <span class="o">==</span> <span class="mh">0x80</span><span class="p">:</span>
+      <span class="n">a</span> <span class="o">^=</span> <span class="mh">0x1b</span>
+    <span class="n">b</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+  <span class="k">return</span> <span class="n">p</span> <span class="o">%</span> <span class="mi">256</span>
+</code></pre></div></div>
+
+<p>Now, we need to figure out some way to decrypt our own messages, given a key and ciphertext. Basically, we find the inverse of our key, and then do multiplication by the inverse to get to the original character, similar to how modular division works.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+  <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="n">p</span> <span class="o">^=</span> <span class="n">a</span>
+    <span class="n">check</span> <span class="o">=</span> <span class="n">a</span> <span class="o">&amp;</span> <span class="mh">0x80</span>
+    <span class="n">a</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">check</span> <span class="o">==</span> <span class="mh">0x80</span><span class="p">:</span>
+      <span class="n">a</span> <span class="o">^=</span> <span class="mh">0x1b</span>
+    <span class="n">b</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+  <span class="k">return</span> <span class="n">p</span> <span class="o">%</span> <span class="mi">256</span>
+
+<span class="k">def</span> <span class="nf">div</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">multiply</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="n">a</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">i</span>
+
+<span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="n">ct</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+  <span class="n">key</span> <span class="o">=</span> <span class="p">[</span><span class="n">div</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">ct</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+  <span class="n">key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span><span class="o">//</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">))</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ct</span><span class="p">):</span>
+    <span class="n">o</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">multiply</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)],</span> <span class="n">p</span><span class="p">))</span>
+  <span class="k">return</span><span class="p">(</span><span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">chr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">o</span><span class="p">])</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'latin-1'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="key-recovery">Key recovery</h3>
+
+<p>Alright… so now we need the key… how are we going to do that?</p>
+
+<p>Well, we can assume/~guess~ that the plaintext will be somewhat text, with the flag buried in there somewhere.</p>
+
+<p>Now, since the key is repeated, it acts like a multi-byte xor key, and since we know the maximum length of the key can only be 16, we can bruteforce this key length too.</p>
+
+<p>Since we can guess most of the plaintext will be readable, we can, for each byte of the key, bruteforce all 256 possible bytes, and then see what byte results in the most readable plaintext, just in case all of it isn’t readable.</p>
+
+<p>Implementation below:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ciphertext</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"ciphertext"</span><span class="p">,</span><span class="s">"rb"</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+  <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">b</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="n">p</span> <span class="o">^=</span> <span class="n">a</span>
+    <span class="n">check</span> <span class="o">=</span> <span class="n">a</span> <span class="o">&amp;</span> <span class="mh">0x80</span>
+    <span class="n">a</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">check</span> <span class="o">==</span> <span class="mh">0x80</span><span class="p">:</span>
+      <span class="n">a</span> <span class="o">^=</span> <span class="mh">0x1b</span>
+    <span class="n">b</span> <span class="o">&gt;&gt;=</span> <span class="mi">1</span>
+  <span class="k">return</span> <span class="n">p</span> <span class="o">%</span> <span class="mi">256</span>
+
+<span class="k">def</span> <span class="nf">div</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">multiply</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="o">==</span> <span class="n">a</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">i</span>
+
+<span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="n">ct</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+  <span class="n">key</span> <span class="o">=</span> <span class="p">[</span><span class="n">div</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">ct</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+  <span class="n">key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span><span class="o">//</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">))</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ct</span><span class="p">):</span>
+    <span class="n">o</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">multiply</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)],</span> <span class="n">p</span><span class="p">))</span>
+  <span class="k">return</span><span class="p">(</span><span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">chr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">o</span><span class="p">])</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'latin-1'</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">keylen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">16</span><span class="p">):</span>
+  <span class="n">key</span> <span class="o">=</span> <span class="p">[</span><span class="s">""</span><span class="p">]</span> <span class="o">*</span> <span class="n">keylen</span>
+  <span class="n">ct</span> <span class="o">=</span> <span class="p">[</span><span class="n">ciphertext</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">keylen</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">),</span> <span class="n">keylen</span><span class="p">)][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">keylen</span><span class="p">):</span>
+    <span class="n">maxval</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">byte</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+      <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+      <span class="k">for</span> <span class="n">_ct</span> <span class="ow">in</span> <span class="n">ct</span><span class="p">:</span>
+        <span class="n">char</span> <span class="o">=</span> <span class="n">multiply</span><span class="p">(</span><span class="n">_ct</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">byte</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">&gt;=</span> <span class="mi">32</span> <span class="ow">and</span> <span class="n">char</span> <span class="o">&lt;=</span> <span class="mi">128</span><span class="p">:</span><span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="n">maxval</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">maxval</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="n">maxval</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">byte</span>
+    <span class="n">key</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">maxval</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+  <span class="n">key</span> <span class="o">=</span> <span class="p">[</span><span class="n">div</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Key for length {keylen}:"</span><span class="p">,</span><span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">chr</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">key</span><span class="p">]))</span>
+  <span class="n">pt</span> <span class="o">=</span> <span class="n">decrypt</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">b</span><span class="s">'pbctf{'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pt</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Not correct key..."</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Found!"</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+    <span class="nb">exit</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>We then get a lovely Wikipedia article on finite field arithmetic, along with the flag!</p>
+
+<p>Flag: <code class="highlighter-rouge">pbctf{I_love_gf2p8mul!Heart_hEart_heArt_heaRt_hearT}</code></p>
+
+<p>Thanks to <a href="https://github.com/joeyzli">qopruzjf</a> and <a href="https://www.willsroot.io/">will135</a> for working on this with me :)</p>
 
           </div>
         </div>

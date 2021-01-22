@@ -55,11 +55,6 @@ main {
 }
 
 
-
-.content a {
-	text-decoration: underline;
-}
-
 .post-list a {
 	text-decoration: none;
 	position: relative;
