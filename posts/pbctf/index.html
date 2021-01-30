@@ -267,6 +267,7 @@ By: UnblvR
 <p>This means we can use an attack which I like to call the “no leeks” attack. Basically, if we check, for each position, which letter of the alphabet never appears, we know that that character was the original plaintext character.</p>
 
 <p>Implementation below:</p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">ascii_uppercase</span>
 
 <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"output.txt"</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span> <span class="c1"># just 200 lines of output
@@ -280,7 +281,7 @@ By: UnblvR
   <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
   <span class="n">plaintext</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Flag: pbctf}"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">"Flag: pbctf{{{''.join(plaintext)}}}"</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>Flag: <code class="highlighter-rouge">pbctf{FATALFLAWINENIGMA}</code></p>
