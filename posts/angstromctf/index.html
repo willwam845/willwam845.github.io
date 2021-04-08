@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>blog by willwam845 | angstromctf 2021 writeups</title>
+  <link rel="stylesheet" href="/assets/css/mark.css" />
+  <link rel="stylesheet" href="/assets/css/custom.css" />
+  <!-- PILL JS LOADER SYLE -->
+  <style>
+    #indicator {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 3px;
+      display: none;
+      background-color: #85fffd;
+    }
+
+    .is-loading {
+      display: block;
+      animation: blink 1.5s linear infinite;
+    }
+
+    @keyframes blink {
+      from,
+      to {
+        background-color: #85fffd;
+      }
+
+      50% {
+        background-color: #4287f5;
+      }
+    }
+
+    #project-link {
+      display: block;
+      position: fixed;
+      padding: 8px;
+      top: 0;
+      right: 0;
+    }
+  </style>
+  <!-- PILL JS -->
+  <script src="/assets/js/pill.min.js"></script>
+  <script>
+    // this is for pill js as the normal link wont work
+    function openLink(url) {
+      window.open(url, "_blank");
+    }
+  </script>
+</head>
+
+  <body>
+    <div id="indicator"></div>
+    <div id="page">
+      <style>
+        .title {
+          padding: 2%;
+          color: #101417;
+          font-size: 20px;
+          font-weight: bold;
+          text-align: left;
+          background: #23b0ff;
+          font-size: 2rem;
+        }
+        .meta {
+          font-size: 0.7rem;
+          font-weight: normal;
+          text-transform: uppercase;
+        }
+      </style>
+      <!-- header -->
+      <header>
+	<a href="/">
+		<h3>blog by willwam845</h3>
+	</a>
+</header>
+
+      <!-- nav -->
+      <nav>
+	
+		
+			<a href="/">home</a>
+		
+	
+		
+			<a href="/about">about</a>
+		
+	
+</nav>
+      <!-- page content -->
+      <main class="content">
+        <p class="title">
+          angstromctf 2021 writeups <span class="meta"></span>
+        </p>
+        <span class="post-tags">tags: ctf,crypto</span>
+        <div>
+          <div id="markdown-content">
+            <h1 id="angstromctf-2021">AngstromCTF 2021</h1>
+
+<p>I participated in AngstromCTF 2021 as part of The WinRaRs, as it was the first CTF we did as a team in 2020. The Angstrom team did a very good job at making ~toxic~ interesting challenges, and it was also nice to try out some other categories for a change. We placed [], and here I will write up the challenges that I solved that I found interesting.</p>
+
+<h2 id="home-rolled---crypto">Home Rolled - Crypto</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Aplet made his own block cipher! Can you break it?
+
+Author: EvilMuffinHa
+</code></pre></div></div>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python
+</span><span class="kn">import</span> <span class="nn">binascii</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
+
+<span class="k">class</span> <span class="nc">Cipher</span><span class="p">:</span>
+    <span class="n">BLOCK_SIZE</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">ROUNDS</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">BLOCK_SIZE</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ROUNDS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+
+    <span class="k">def</span> <span class="nf">__block_encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
+        <span class="n">enc</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="s">"big"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ROUNDS</span><span class="p">):</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">BLOCK_SIZE</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">BLOCK_SIZE</span><span class="p">],</span> <span class="s">"big"</span><span class="p">)</span>
+            <span class="n">enc</span> <span class="o">&amp;=</span> <span class="n">k</span>
+            <span class="n">enc</span> <span class="o">^=</span> <span class="n">k</span>
+        <span class="k">return</span> <span class="nb">hex</span><span class="p">(</span><span class="n">enc</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BLOCK_SIZE</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="s">"0"</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__pad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">BLOCK_SIZE</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">msg</span> <span class="o">+</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BLOCK_SIZE</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">BLOCK_SIZE</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">msg</span>
+    
+    <span class="k">def</span> <span class="nf">encrypt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pad</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="s">""</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">BLOCK_SIZE</span><span class="p">):</span>
+            <span class="n">e</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__block_encrypt</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">BLOCK_SIZE</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">e</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+
+<span class="n">key</span> <span class="o">=</span> <span class="n">binascii</span><span class="o">.</span><span class="n">unhexlify</span><span class="p">(</span><span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="s">"abcdef0123456789"</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Cipher</span><span class="o">.</span><span class="n">BLOCK_SIZE</span><span class="o">*</span><span class="n">Cipher</span><span class="o">.</span><span class="n">ROUNDS</span><span class="o">*</span><span class="mi">2</span><span class="p">)]))</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"flag"</span><span class="p">,</span> <span class="s">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="n">cipher</span> <span class="o">=</span> <span class="n">Cipher</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Would you like to encrypt [1], or try encrypting [2]? "</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="s">"1"</span><span class="p">:</span>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"What would you like to encrypt: "</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">binascii</span><span class="o">.</span><span class="n">unhexlify</span><span class="p">(</span><span class="n">p</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Invalid input. "</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">a</span> <span class="o">==</span> <span class="s">"2"</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="s">"abcdef0123456789"</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">)])</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Encrypt this:"</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="n">binascii</span><span class="o">.</span><span class="n">unhexlify</span><span class="p">(</span><span class="n">p</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="nb">input</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">e</span> <span class="o">!=</span> <span class="n">c</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"L"</span><span class="p">)</span>
+                <span class="nb">exit</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"W"</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">flag</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>            
+
+    <span class="k">elif</span> <span class="n">a</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">"quit"</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Bye"</span><span class="p">)</span>
+        <span class="nb">exit</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Invalid input. "</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We have a server which implements a custom block cipher, allowing us to encrypt anything, and then asking us for the encryption of a random plaintext it gives. The block cipher just uses standard ECB mode, so we only have the block cipher to attack.</p>
+
+<p>The interesting function here is the <code class="highlighter-rouge">__block_encrypt</code> function, which, we can assume encrypts a single block of ciphertext. Looking closely, it only performs a logical AND and a logical XOR on the state and the key. This means that none of the bits affect each other. Knowing this, it is very easy to encrypt a chosen plaintext, as each bit will always become a certain value, and we can create a lookup table for each bit, that is, what bit it becomes if it is originally a 0 bit, and what bit it becomes when it is originally a 1 bit.</p>
+
+<p>Implementation below.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s">"crypto.2021.chall.actf.co"</span><span class="p">,</span> <span class="mi">21602</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"[2]?"</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"1"</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"0"</span> <span class="o">*</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">ct0</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"[2]?"</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">32</span><span class="p">:],</span> <span class="mi">16</span><span class="p">))[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"1"</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"f"</span> <span class="o">*</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">ct1</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"[2]?"</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">32</span><span class="p">:],</span> <span class="mi">16</span><span class="p">))[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"2"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+  <span class="n">ct</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()[</span><span class="o">-</span><span class="mi">65</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">))[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="s">""</span>
+  <span class="k">for</span> <span class="n">c</span><span class="p">,</span><span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ct</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s">"0"</span><span class="p">:</span>
+      <span class="n">o</span> <span class="o">+=</span> <span class="n">ct0</span><span class="p">[</span><span class="n">c</span><span class="o">%</span><span class="mi">128</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">o</span> <span class="o">+=</span> <span class="n">ct1</span><span class="p">[</span><span class="n">c</span><span class="o">%</span><span class="mi">128</span><span class="p">]</span>
+  <span class="n">ct</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+  <span class="n">s</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">ct</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
+<span class="n">s</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+
+<span class="c1"># i whipped this up in 3 minutes before ctf end please dont judge kthanks
+</span></code></pre></div></div>
+
+<p><code class="highlighter-rouge">Flag: actf{no_bit_shuffling_is_trivial}</code></p>
+
+<h2 id="im-so-random---crypto">I’m So Random - Crypto</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Aplet's quirky and unique so he made my own PRNG! It's not like the other PRNGs, its absolutely unbreakable!
+
+Author: EvilMuffinHa
+</code></pre></div></div>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">class</span> <span class="nc">Generator</span><span class="p">():</span>
+    <span class="n">DIGITS</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">))</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">DIGITS</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getNum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DIGITS</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="s">"0"</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">DIGITS</span><span class="o">//</span><span class="mi">2</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">DIGITS</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">DIGITS</span><span class="o">//</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span>
+
+
+<span class="n">r1</span> <span class="o">=</span> <span class="n">Generator</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10000000</span><span class="p">,</span> <span class="mi">99999999</span><span class="p">))</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="n">Generator</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10000000</span><span class="p">,</span> <span class="mi">99999999</span><span class="p">))</span>
+
+
+<span class="n">query_counter</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Would you like to get a random output [r], or guess the next random number [g]? "</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">"r"</span><span class="p">,</span> <span class="s">"g"</span><span class="p">]:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Invalid input."</span><span class="p">)</span>
+        <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">"r"</span> <span class="ow">and</span> <span class="n">query_counter</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">getNum</span><span class="p">()</span> <span class="o">*</span> <span class="n">r2</span><span class="o">.</span><span class="n">getNum</span><span class="p">())</span>
+            <span class="n">query_counter</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">elif</span> <span class="n">query_counter</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">"r"</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"You don't get more random numbers!"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+                <span class="n">guess</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">"What is your guess to the next value generated? "</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">guess</span> <span class="o">!=</span> <span class="n">r1</span><span class="o">.</span><span class="n">getNum</span><span class="p">()</span> <span class="o">*</span> <span class="n">r2</span><span class="o">.</span><span class="n">getNum</span><span class="p">():</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">"Incorrect!"</span><span class="p">)</span>
+                    <span class="nb">exit</span><span class="p">()</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"flag"</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">fleg</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Congrats! Here's your flag: "</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">fleg</span><span class="p">)</span>
+            <span class="nb">exit</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>This challenge gives us 2 PRNGS, and then returns the product of them. Our goal is to recover the next product of 2 states.</p>
+
+<p>Knowing that the states have 8 digits in them, we just factor the given number states until one of them is 8 digits, in which case we can simply reseed the PRNGS, and get the next product.</p>
+
+<p>I did this one manually, it usually doesn’t take many tries to get one state with a factor.</p>
+
+<p><code class="highlighter-rouge">Flag: actf{middle_square_method_more_like_middle_fail_method}</code></p>
+
+<h2 id="thunderbolt---crypto">Thunderbolt - Crypto</h2>
+
+<p><a href="https://willwam845.github.io/ctffiles/angstrom2021/thunderbolt">binary</a></p>
+
+<p>This challenge gives us a binary. ~how toxic for a crypto challenge~</p>
+
+<p>I spent a long time trying to reverse it, as I thought this was crypto rev, but I was in fact proven wrong. The gist of the reversing is that it reads in our plaintext, appends the flag to the plaintext, then it reads in 2 keys, one being 16 bytes and the other being the length of the plaintext, and then does some weird keystream generation. It then does some weird XOR things and encrypts the plaintext.</p>
+
+<p>I didn’t realise it at the time, but this was just an implementation of RC4 (how silly of me)</p>
+
+<p>Anyway, the vulnerability is in the implementation of RC4, more specifically how they implement the swapping part.</p>
+
+<p>Opening it up in ghidra:</p>
+
+<p><img src="/images/angstromctf2021/1.png" alt="hm" /></p>
+
+<p>It seems to use the XOR swap method to do swapping during encryption. This removes the need to create a temporary variable, which is pretty useful. However, problems arise when the two values being swapped are the same. The two values XORed together will result in both of the values turning into 0’s instead of being swapped. Interesting.</p>
+
+<p>If we send a lot of bytes to the server, this means that over time, the keystream will be corrupted with null bytes. We should then be able to find the flag at the end, as it should not be XORed with anything.</p>
+
+<p>Therefore, our solve script simply becomes:</p>
+
+<p><code class="highlighter-rouge">python -c 'print("\x01" * 15000)' | nc crypto.2021.chall.actf.co 21603 | tail -c 200</code></p>
+
+<p>(We have to use \x01 bytes because since the binary uses fgets, which terminates at null bytes, so it doesn’t actually become part of the plaintext)</p>
+
+<p>Our flag therefore is:</p>
+
+<p><code class="highlighter-rouge">Flag: actf{watch_the_edge_cases_31b2eb7440e6992c33f3e5bbd184}</code></p>
+
+          </div>
+        </div>
+      </main>
+      <!-- footer -->
+      <footer>
+	<p>
+		yeah this blog was made by me
+	</p>
+	<p>
+		&copy 2019 | made with the <a href="https://github.com/sharadcodes/jekyll-theme-dark-reader">dark reader theme</a>
+	</p>
+</footer>
+<script src='/assets/js/site.js' id="pill_site_script" type='module'></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+  integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+  integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+  integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+  onload="renderMathInElement(document.body, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '\\[', right: '\\]', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }]})"></script>
+
+
+    </div>
+  </body>
+</html>
